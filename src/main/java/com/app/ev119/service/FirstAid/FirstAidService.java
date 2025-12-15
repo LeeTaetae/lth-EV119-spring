@@ -1,0 +1,12 @@
+package com.app.ev119.service.FirstAid;
+
+import com.app.ev119.domain.entity.FirstAid;
+import com.app.ev119.repository.FirstAidRepository;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Service;
+
+@Service
+public interface FirstAidService {
+    public Long firstAidSave(FirstAid firstAid);
+    public FirstAid firstAidFindById(Long id);
+}
