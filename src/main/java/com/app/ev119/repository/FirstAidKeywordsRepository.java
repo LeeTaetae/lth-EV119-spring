@@ -9,4 +9,5 @@ public interface FirstAidKeywordsRepository extends JpaRepository<FirstAidKeywor
     public FirstAidKeywords save(FirstAidKeywords keywords);
     public Optional<FirstAidKeywords> findById(Long id);
     public Optional<FirstAidKeywords> findByKeyword(String keyword);
+    public boolean existsByKeyword(String keyword);
 }

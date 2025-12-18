@@ -59,4 +59,9 @@ public class FirstAidRepositoryTest {
 
         firstAidKeywordsRepository.save(firstAidKeywords);
     }
+
+    @Test
+    public void findFirstAid(){
+        log.info("있음? 없음?={}", firstAidKeywordsRepository.existsByKeyword("테스트"));
+    }
 }
