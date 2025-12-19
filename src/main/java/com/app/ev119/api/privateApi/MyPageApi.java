@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class MyPageApi {
     private final MyPageService myPageService;
 
-    @PostMapping("/me")
+    @GetMapping("/me")
     public ResponseEntity<ApiResponseDTO<MemberDTO>> getProfile(Authentication tokenDTO){
         Long memberId = myPageService.findIdByToken(tokenDTO);
         MemberDTO member = myPageService.getMember(memberId);
@@ -23,7 +23,7 @@ public class MyPageApi {
                 .body(ApiResponseDTO.of("멤버의 정보 가져오기 성공", member));
     }
 
-    @PostMapping("/edit")
+    @PutMapping("/edit")
     public ResponseEntity<ApiResponseDTO> editProfile(Authentication tokenDTO, @RequestBody MemberDTO member) {
         Long memberId = myPageService.findIdByToken(tokenDTO);
         myPageService.modifyMember(memberId, member);

@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,7 +19,7 @@ public class AllergyApi {
     private final AllergyService allergyService;
     private final MyPageService myPageService;
 
-    @PostMapping("/allergy")
+    @GetMapping("/allergy")
     public ResponseEntity<ApiResponseDTO> getAllAllergy(Authentication tokenDTO) {
         Long memberId = myPageService.findIdByToken(tokenDTO);
         List<AllergyDTO> memberAllergies = allergyService.findAllergies(memberId);

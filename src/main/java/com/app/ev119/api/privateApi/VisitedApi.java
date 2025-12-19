@@ -19,7 +19,7 @@ public class VisitedApi {
     private final VisitedService visitedService;
     private final MyPageService myPageService;
 
-    @PostMapping("/visited")
+    @GetMapping("/visited")
     public ResponseEntity<ApiResponseDTO> getVisited(Authentication tokenDTO) {
         Long memberId = myPageService.findIdByToken(tokenDTO);
         List<VisitedDTO> visitedDTOList = visitedService.findVisitedLogs(memberId);

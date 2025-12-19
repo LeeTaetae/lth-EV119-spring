@@ -8,9 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,12 +17,21 @@ public class HealthApi {
     private final MyPageService myPageService;
     private final HealthService healthService;
 
-    @PostMapping("/health")
+    @GetMapping("/health")
     public ResponseEntity<ApiResponseDTO> getHealth(Authentication tokenDTO) {
         Long memberId = myPageService.findIdByToken(tokenDTO);
         HealthDTO memberHealth = healthService.findHealth(memberId);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiResponseDTO.of("멤버의 건강 정보가져오기 성공", memberHealth));
+                .body(ApiResponseDTO.of("멤버의 건강 정보 가져오기 성공", memberHealth));
+    }
+
+    @PostMapping("/health/modify")
+    public ResponseEntity<ApiResponseDTO> updateHealth(Authentication tokenDTO, HealthDTO healthDTO) {
+        Long memberId = myPageService.findIdByToken(tokenDTO);
+        healthService.updateHealth(memberId, healthDTO);
+        HealthDTO resultHealthDTO = healthService.findHealth(memberId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponseDTO.of("멤버의 건강 정보 추가 성공", resultHealthDTO));
     }
 
     @PostMapping("/health/add-disease")
