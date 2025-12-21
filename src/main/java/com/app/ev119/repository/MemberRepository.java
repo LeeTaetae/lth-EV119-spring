@@ -43,11 +43,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // 회원가입
     public Member save(Member member);
 
-    // 회원 탈퇴
-    public void deleteById(Long id);
 
-    // 회원 삭제
-    public void delete(Member member);
+
+
 
 
 }
