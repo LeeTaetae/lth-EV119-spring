@@ -232,6 +232,15 @@ public class MemberService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 번호로 가입된 회원이 없습니다."));
     }
 
+    @Transactional
+    public void withdraw(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
+        memberRepository.delete(member);
+    }
+
+
 
 
 

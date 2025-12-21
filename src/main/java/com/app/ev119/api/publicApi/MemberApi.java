@@ -5,11 +5,14 @@ import com.app.ev119.domain.dto.request.member.LoginRequestDTO;
 import com.app.ev119.domain.dto.request.member.ResetPasswordRequestDTO;
 import com.app.ev119.domain.dto.request.member.SignUpRequestDTO;
 import com.app.ev119.domain.dto.response.member.LoginResponseDTO;
+import com.app.ev119.domain.entity.Member;
+import com.app.ev119.repository.MemberRepository;
 import com.app.ev119.service.member.MemberService;
 import com.app.ev119.service.sms.SmsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +25,7 @@ public class MemberApi {
 
     private final MemberService memberService;
     private final SmsService smsService;
+    private final MemberRepository memberRepository;
 
     // 회원가입
     @PostMapping("/signup")
@@ -143,6 +147,15 @@ public class MemberApi {
 
         return ResponseEntity.ok(ApiResponseDTO.of("인증되었습니다.", data));
     }
+
+    @DeleteMapping("/withdraw")
+    public ResponseEntity<ApiResponseDTO> memberWithdraw(@RequestParam Long memberId) {
+
+        memberService.withdraw(memberId);
+
+        return ResponseEntity.ok(ApiResponseDTO.of("탈퇴가 완료되었습니다."));
+    }
+
 
 
 }
