@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
@@ -66,24 +68,33 @@ public class MyPageServiceImpl implements MyPageService {
         if (foundMember == null) {
             throw new MyPageException("존재하지 않는 회원입니다. memberId: " + memberId);
         }
+
         memberStaffRepository.findByMember_Id(memberId).forEach(memberStaff -> {
             staffCertRepository.deleteByMemberStaff_Id(memberStaff.getId());
         });
+        entityManager.flush();
         memberStaffRepository.deleteByMember_Id(memberId);
+
         Health health = healthRepository.findByMember_Id(memberId);
         if (health != null) {
-            diseaseRepository.deleteByHealth_Id(health.getId());
+            List<Disease> diseaseList = diseaseRepository.findByHealth_Id(health.getId());
+            diseaseRepository.deleteAll(diseaseList);
         }
-        healthRepository.deleteByMember_Id(memberId);
+        entityManager.flush();
+
         addressRepository.deleteByMember_Id(memberId);
         allergyRepository.deleteByMember_Id(memberId);
         emergencyPhoneRepository.deleteByMember_Id(memberId);
         medicationRepository.deleteByMember_Id(memberId);
         visitedRepository.deleteByMember_Id(memberId);
         memberSocialRepository.deleteByMemberId(memberId);
-        
         entityManager.flush();
-        entityManager.remove(foundMember);
+        entityManager.clear();
+
+        healthRepository.deleteByMember_Id(memberId);
+        if(entityManager.find(Member.class, memberId) != null){
+            entityManager.remove(foundMember);
+        }
     }
 
     @Override
